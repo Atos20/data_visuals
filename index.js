@@ -8,4 +8,14 @@
 // var s = d3.select('div').text('I have changed,');
 
 //append ()
-d3.select('div').append('body').text(':)')
+// d3.select('div').append('body').text(':)')
+
+//remove()
+//this body element inside the first div is creater the we grab the body element and remove it
+// var divElement = d3.select('div');
+
+// var bodyChildElement = divElement.append('body').text('to remove');
+// setTimeout(() => {
+
+//   bodyChildElement.remove();
+// }, 2000)
