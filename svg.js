@@ -151,4 +151,3 @@ svg8.append('circle')
   .transition()
   .duration(2000)
   .attr('fill', 'green')
-   
