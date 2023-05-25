@@ -19,3 +19,13 @@
 
 //   bodyChildElement.remove();
 // }, 2000)
+
+// using two style methods we change the first div's style 
+// d3.select('div').style("color", "purple").style("background-color", "pink")
+
+//add a new attribute to the second element 
+// d3.select('body')
+//   .select("div:nth-child(2)")
+//   .style("background-color", "purple")
+//   .attr("class", "some random class");
+
