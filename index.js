@@ -72,7 +72,7 @@ d3.select("body") // Binding data mydata elements with h1 tags
   .text(function(d) { return d;}) 
   */ 
 
-
+/*
   //linear scale
   var cgpaconv = d3.scaleLinear()
   .domain([0,10])
@@ -93,3 +93,31 @@ var cgpaconv =  d3.scaleLinear()
   .clamp(true);// with clamp true the output ofthis function will fall within the  given range
 
   console.log(cgpaconv(20));
+*/
+
+var qscale = d3.scaleQuantize()
+  .domain([0, 100])
+  .range(['Neon Carrot', 'Caribbean Green', 'Spring Green', 'Iris Blue']);
+console.log(qscale(65));// Spring Green
+console.log(qscale.invertExtent('Neon Carrot'))
+console.log(qscale.invertExtent('Caribbean Green'))
+console.log(qscale.invertExtent('Spring Green'))
+console.log(qscale.invertExtent('Iris Blue'))
+
+//it maps discrete input to discrete output =? given input maps to specific set output
+var gradeConv = d3.scaleOrdinal()
+  .domain(['A', 'A-', 'B', 'B-', 'C'])
+  .range([10, 9, 8, 7, 6]);
+
+console.log(gradeConv('A'));// 10
+console.log(gradeConv('B'));//8
+
+//ScaleBand
+
+var grade_conv = d3.scaleBand()
+  .domain(['X', 'Y', 'Z'])
+  .range([0, 300]);
+
+console.log(grade_conv('X'))
+console.log(grade_conv('Y'))
+console.log(grade_conv('Z'))
