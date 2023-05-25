@@ -46,7 +46,8 @@ color is very important tool in data visualizzation and should be  used wisely
 //     .text("stock_value")
 //     .attr('transform', "translate(100,270) rotate(-90)");                       
 
-
+//comuted margins
+/*
 var margin = {top: 20, right: 20, bottom: 60, left: 60}, // defining object with a property for each side
      width = 400 - margin.left - margin.right,  // width of the chart
      height = 400 - margin.top - margin.bottom; // height of the chart
@@ -81,5 +82,33 @@ chart.append('g')
     .attr('transform', 'translate(0,' + height + ')')
 chart.append('g')
     .call(d3.axisLeft(yscale))
+*/
+    //linear Chart
+/*
+var svg = d3.select("body") //create Svg element
+        .append("svg")
+        .attr("height",500)
+        .attr("width", 500)
+        .style("border", "solid 8px red")
+      .attr("transform","translate(220,0)"); // To align svg at the center in the output tab.
+var data = [
+    { X:10,Y:100},
+    { X:250,Y:200},
+    { X:300,Y:400},
+    { X:400,Y:150}
+    ];
 
-    
+var generator = d3.line()
+    .x(function (d) { return d.X; })
+    .y(function (d) { return d.Y; });
+svg.append('path')
+    .datum(data)
+    //We are using datum() instead of the data() function because we are only binding one path to all data elements 
+    //instead of multiple paths for every single data element. In line 106, we have initialized the d attribute of the path,
+    // which will draw the path with the help of the line generator
+    .attr("d", generator)
+    .attr("fill","none")
+    .attr("stroke","blue")
+    .attr("stroke-width","2px");
+
+    */
