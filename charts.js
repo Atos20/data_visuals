@@ -228,6 +228,8 @@ chart.append("text")
 
   */
 
+    //PieChart
+/*
 var margin = {top: 20, right: 20, bottom: 60, left: 80},
   width = 500 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
@@ -281,3 +283,176 @@ p_chart.append("text")
         return "translate(" + arc.centroid(d) + ")";
         }) 
       .style("text-anchor", "middle")  
+      */
+
+//Area Chart
+/*
+var margin = {top: 20, right: 20, bottom: 60, left: 80},
+    width = 700 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
+
+var svg = d3.select("body") //create Svg element
+  .append("svg")
+  .attr('width', width + margin.right + margin.left)
+  .attr('height', height + margin.top + margin.bottom)
+  .style("border", "solid 1px red")
+  .attr("transform","translate(100,0)"); 
+
+var data = [
+  {  date:"2020/01/01 00:00:00", patients: 600 },
+  {  date:"2020/02/01 00:00:00", patients: 500 },
+  {  date:"2020/03/01 00:00:00", patients: 400 },
+  {  date:"2020/04/01 00:00:00", patients: 500 },
+  {  date:"2020/05/01 00:00:00", patients: 300 },
+  {  date:"2020/06/01 00:00:00", patients: 100 },
+  {  date:"2020/07/01 00:00:00", patients: 50  },
+  {  date:"2020/08/01 00:00:00", patients: 500 },
+  {  date:"2020/09/01 00:00:00", patients: 550 },
+  {  date:"2020/10/01 00:00:00", patients: 550 },
+];
+
+data = data.map(d => ({
+  date: new Date(d.date),
+  patients: d.patients
+  }));
+
+var xscale = d3.scaleTime()
+                .domain(d3.extent(data, d=>d.date))
+                .range([0,width]);
+
+var yscale = d3.scaleLinear()                         // drawing  y scale
+          .domain([0,600])
+          .range([height,0])
+
+var chart = svg.append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+  .attr('width', width)
+  .attr('height', height);
+
+chart.append('g')
+  .call(d3.axisBottom(xscale).tickFormat(d3.timeFormat("%b")))
+  .attr('transform', 'translate(0,' + height + ')');
+
+chart.append('g')
+  .call(d3.axisLeft(yscale));
+
+svg.append("text")                                  // labelling x-axis
+  .text("Month")          
+  .attr("transform","translate(350,680)");
+
+svg.append("text")                                 // labelling y-axis
+  .text("Number of patients")
+  .attr('transform', "translate(40,400) rotate(-90)");
+
+var area_generator = d3.area()
+  .x(function (d) { return xscale(d.date); })
+  .y0(height)
+  .y1(function (d) { return yscale(d.patients); });
+
+chart.append('path')
+  .datum(data)
+  .attr("d", area_generator)
+  .attr('fill','#00A5E3')
+*/
+//StackedArea Chart
+
+var margin = {top: 20, right: 150, bottom: 60, left: 80},
+     width = 950 - margin.left - margin.right,
+     height = 700 - margin.top - margin.bottom;
+
+var svg = d3.select("body") //create Svg element
+   .append("svg")
+   .attr('width', width + margin.right + margin.left)
+   .attr('height', height + margin.top + margin.bottom)
+   .style("border", "solid 1px red");;
+
+var data = [
+    {  date:"2020/01/01 00:00:00", flu_patients: 100, malaria_patients:100, dengue_patients: 10 },
+    {  date:"2020/02/01 00:00:00", flu_patients: 200, malaria_patients:200,  dengue_patients: 30},
+    {  date:"2020/03/01 00:00:00", flu_patients: 50, malaria_patients:150,  dengue_patients: 80},
+    {  date:"2020/05/01 00:00:00", flu_patients: 70, malaria_patients:250,  dengue_patients: 90},
+    {  date:"2020/06/01 00:00:00", flu_patients: 100, malaria_patients:300,  dengue_patients: 100},
+    {  date:"2020/07/01 00:00:00", flu_patients: 150,  malaria_patients:150,   dengue_patients: 120},
+    {  date:"2020/08/01 00:00:00", flu_patients: 200,malaria_patients:140,  dengue_patients: 70},
+    {  date:"2020/09/01 00:00:00", flu_patients: 300,malaria_patients:80, dengue_patients: 60},
+    {  date:"2020/10/01 00:00:00", flu_patients: 250, malaria_patients:70, dengue_patients: 50},
+        ];    
+
+data=data.map(d => ({
+   date: new Date(d.date),
+   flu_patients: d.flu_patients,
+   malaria_patients: d.malaria_patients,
+   dengue_patients: d.dengue_patients
+   }))  
+  
+var stack=d3.stack().keys(["flu_patients", "malaria_patients", "dengue_patients"]);
+
+var colors=["#00A5E3",
+          "#FF96C5",
+          "#00CDAC"];
+
+var s_data=stack(data);
+
+var xscale = d3.scaleTime()
+            .domain(d3.extent(data, d=>d.date))
+            .range([0,width]);
+
+var yscale = d3.scaleLinear()
+           .domain([0,d3.max(s_data[s_data.length-1],function(d){ return d[1]})])                         // drawing  y scale
+           .range([height,0]);
+
+var chart = svg.append('g')
+   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+   .attr('width', width)
+   .attr('height', height)  
+var area_generator = d3.area()
+    .x(function (d) { return xscale(d.data.date); })
+    .y0(function (d) { return yscale(d[0]);})
+    .y1(function (d) { return yscale(d[1]); });      
+var p_chart=chart.selectAll("area")
+     .data(s_data)
+     .enter()
+     .append("g")
+p_chart.append("path")
+     .attr("fill",function(d,i){ return colors[i]})
+     .attr("d",area_generator) 
+chart.append('g')
+   .call(d3.axisBottom(xscale).tickFormat(d3.timeFormat("%b")))
+   .attr('transform', 'translate(0,' + height + ')')
+chart.append('g')
+   .call(d3.axisLeft(yscale))
+svg.append("text")                                  // labelling x-axis
+    .text("Month")          
+    .attr("transform","translate(350,680)");
+svg.append("text")                                 // labelling y-axis
+    .text("Number of patients")
+    .attr('transform', "translate(40,400) rotate(-90)"); 
+chart.append("rect") //Draw rectangle
+   .attr("x", 740)
+   .attr("y", 50)
+   .attr("height", 10)
+   .attr("width", 15)
+   .attr("fill", "#00A5E3")
+chart.append("text")                                  // labelling x-axis
+    .text("Flu_patients")          
+    .attr("transform","translate(760,60)");
+chart.append("rect") //Draw rectangle
+   .attr("x", 740)
+   .attr("y", 70)
+   .attr("height", 10)
+   .attr("width", 15)
+   .attr("fill", "#FF96C5")
+chart.append("text")                                  // labelling x-axis
+    .text("Malaria_patients")          
+    .attr("transform","translate(760,80)");
+chart.append("rect") //Draw rectangle
+   .attr("x", 740)
+   .attr("y", 90)
+   .attr("height", 10)
+   .attr("width", 15)
+   .attr("fill", "#00CDAC")
+chart.append("text")                                  // labelling x-axis
+    .text("Dengue_patients")          
+    .attr("transform","translate(760,100)");
+
+
