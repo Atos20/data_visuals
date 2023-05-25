@@ -283,7 +283,7 @@ p_chart.append("text")
         return "translate(" + arc.centroid(d) + ")";
         }) 
       .style("text-anchor", "middle")  
-      */
+*/
 
 //Area Chart
 /*
@@ -355,7 +355,7 @@ chart.append('path')
   .attr('fill','#00A5E3')
 */
 //StackedArea Chart
-
+/*
 var margin = {top: 20, right: 150, bottom: 60, left: 80},
      width = 950 - margin.left - margin.right,
      height = 700 - margin.top - margin.bottom;
@@ -454,5 +454,59 @@ chart.append("rect") //Draw rectangle
 chart.append("text")                                  // labelling x-axis
     .text("Dengue_patients")          
     .attr("transform","translate(760,100)");
+*/
 
+//BARCHART
+/*
+var margin = {top: 20, right: 150, bottom: 60, left: 80},
+     width = 700 - margin.left - margin.right,
+     height = 600 - margin.top - margin.bottom;
+var svg = d3.select("body") //create Svg element
+   .append("svg")
+   .attr('width', width + margin.right + margin.left)
+   .attr('height', height + margin.top + margin.bottom)
+   .style("border", "solid 1px red")
+   .attr("transform","translate(100,0)"); // To align svg at the center in the output tab.
+var data = [
+   { grade: "A", num_students: 8},
+   { grade: "A-", num_students: 12},
+   { grade: "B+", num_students: 20},
+   { grade: "B", num_students: 25},
+   { grade: "B-", num_students: 20},
+   { grade: "C+", num_students: 10},
+   { grade: "F", num_students: 5 },
+        ]                  
+var x = d3.scaleBand()
+    .domain(data.map(d => d.grade))
+    .range([0, width])
+    .padding(0.2);
+var y = d3.scaleLinear()
+    .domain([0,d3.max(data,d=> d.num_students)])
+    .range([height, 0]);                      
+var chart=svg.append('g')
+   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+   .attr('width', width)
+   .attr('height', height)  
+chart.append('g')
+   .call(d3.axisLeft(y))
+chart.append('g')
+     .call(d3.axisBottom(x))
+     .attr('transform', 'translate(0,' + height + ')')
+chart.selectAll('rect')
+    .data(data)
+    .enter()
+    .append('rect')
+    .attr('width', x.bandwidth)
+    .attr('height', d => height - y(d.num_students))
+    .attr('x', d => x(d.grade))
+    .attr('y', d => y(d.num_students))
+    .attr('fill','#00A5E3');
+svg.append("text")                                  // labelling x-axis
+    .text("Grades")          
+    .attr("transform","translate(250,570)");
+svg.append("text")                                 // labelling y-axis
+    .text("Num_students")
+    .attr('transform', "translate(50,270) rotate(-90)");     
+
+*/
 
