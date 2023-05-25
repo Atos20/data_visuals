@@ -72,4 +72,24 @@ d3.select("body") // Binding data mydata elements with h1 tags
   .text(function(d) { return d;}) 
   */ 
 
+
+  //linear scale
+  var cgpaconv = d3.scaleLinear()
+  .domain([0,10])
+  .range([0, 4]);
   
+  console.log(cgpaconv(5))
+//logarithmic search
+var b_step = d3.scaleLog()
+  .domain([1, 1048576])
+  .range([0, 20])
+  .base(2); 
+
+  console.log(Math.ceil(b_step(100000)))// output: 17, it takes 17 steps to find 100000 in the range
+
+var cgpaconv =  d3.scaleLinear()
+  .domain([0, 10])
+  .range([0, 4])
+  .clamp(true);// with clamp true the output ofthis function will fall within the  given range
+
+  console.log(cgpaconv(20));
